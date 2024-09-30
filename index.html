@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deudores BCRA</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="script.js" defer></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-left">
+            <h1>Consulta de Deuda BCRA</h1>
+        </div>
+        <div class="header-right">
+            <!-- Botón para cambiar tema -->
+            <label for="themeToggle" class="theme">
+                <span class="theme__toggle-wrap">
+                    <input id="themeToggle" class="theme__toggle" type="checkbox" role="switch" name="theme" value="dark">
+                    <span class="theme__fill"></span>
+                    <span class="theme__icon">
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                        <span class="theme__icon-part"></span>
+                    </span>
+                </span>
+            </label>
+        </div>
+    </header>
+
+    <main>
+        <div class="button-container">
+            <!-- Botón para seleccionar y cargar el archivo Excel con nuevo diseño -->
+            <button id="selectButton" class="select-button">
+                <svg
+                    aria-hidden="true"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M13.5 3H12H8C6.34315 3 5 4.34315 5 6V18C5 19.6569 6.34315 21 8 21H11M13.5 3L19 8.625M13.5 3V7.625C13.5 8.17728 13.9477 8.625 14.5 8.625H19M19 8.625V11.8125"
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                    ></path>
+                    <path
+                        stroke-linejoin="round"
+                        stroke-linecap="round"
+                        stroke-width="2"
+                        stroke="#ffffff"
+                        d="M17 15V18M17 21V18M17 18H14M17 18H20"
+                    ></path>
+                </svg>
+                Seleccionar archivo Excel
+            </button>
+            <input type="file" id="fileInput" accept=".xlsx" style="display: none;" />
+
+            <!-- Botón "Consultar Deuda" con animación -->
+            <button id="consultarButton" class="animated-button" disabled>
+                <svg viewBox="0 0 24 24" class="arr-2" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+                    ></path>
+                </svg>
+                <span class="text">Consultar Deuda</span>
+                <span class="circle"></span>
+                <svg viewBox="0 0 24 24" class="arr-1" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M16.1716 10.9999L10.8076 5.63589L12.2218 4.22168L20 11.9999L12.2218 19.778L10.8076 18.3638L16.1716 12.9999H4V10.9999H16.1716Z"
+                    ></path>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Área para mostrar mensajes de estado -->
+        <div id="messageDeudas" class="message"></div>
+        <div id="messageCheques" class="message"></div>
+
+        <!-- Tabla para mostrar los resultados de Deudas -->
+        <h2>Deudas</h2>
+        <table id="resultadosDeudas">
+            <thead>
+                <tr>
+                    <th>Denominación</th>
+                    <th>CUIT/CUIL</th>
+                    <th>Entidad</th>
+                    <th>Situación</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <!-- Tabla para mostrar los resultados de Cheques Rechazados -->
+        <h2>Cheques Rechazados</h2>
+        <table id="resultadosCheques">
+            <thead>
+                <tr>
+                    <th>Denominación</th>
+                    <th>Nro. Cheque</th>
+                    <th>Fecha del Rechazo</th>
+                    <th>Monto</th>
+                    <th>Causal</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </main>
+</body>
+</html>
