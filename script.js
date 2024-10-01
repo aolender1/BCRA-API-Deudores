@@ -4,7 +4,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const selectButton = document.getElementById('selectButton');
     const fileInput = document.getElementById('fileInput');
     const consultarButton = document.getElementById('consultarButton');
-    const themeToggle = document.getElementById('themeToggle');
+    const themeToggle = document.getElementById('toggle');
+
+    // Inicializar el tema basado en localStorage
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark');
+        themeToggle.checked = true;
+    } else {
+        document.body.classList.remove('dark');
+        themeToggle.checked = false;
+    }
 
     // Manejar el evento de clic en el botón de selección
     selectButton.addEventListener('click', () => {
@@ -52,21 +62,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Manejar el cambio de tema
     themeToggle.addEventListener('change', () => {
-        document.body.classList.toggle('dark', themeToggle.checked);
-    });
-
-    // Verificar si el tema fue guardado anteriormente
-    const savedTheme = localStorage.getItem('theme');
-    if (savedTheme === 'dark') {
-        themeToggle.checked = true;
-        document.body.classList.add('dark');
-    }
-
-    // Guardar tema preferido
-    themeToggle.addEventListener('change', () => {
         if (themeToggle.checked) {
+            document.body.classList.add('dark');
             localStorage.setItem('theme', 'dark');
         } else {
+            document.body.classList.remove('dark');
             localStorage.setItem('theme', 'light');
         }
     });
@@ -214,7 +214,6 @@ async function consultarDeudaUsuario() {
                 const { results } = data.deuda;
 
                 const denominacion = results.results.denominacion;
-                const identificacion = results.results.identificacion;
                 const periodos = results.results.periodos;
 
                 if (periodos && periodos.length > 0) {
@@ -225,7 +224,7 @@ async function consultarDeudaUsuario() {
                             const situacionNumero = Number(entidad.situacion);
 
                             if (!isNaN(situacionNumero)) {
-                                if (situacionNumero !== 1) { // Solo situación 1
+                                if (situacionNumero !== 1) { // Solo situación distinta a 1
                                     // Crear un nuevo elemento de tabla
                                     const row = resultadosDeudasBody.insertRow();
                                     row.insertCell().textContent = denominacion || 'N/A';
@@ -235,7 +234,7 @@ async function consultarDeudaUsuario() {
                                     resultadosDeudasValidos++;
                                     console.log(`CUIT/CUIL ${cuit} incluido en la tabla de deudas.`);
                                 } else {
-                                    console.log(`CUIT/CUIL ${cuit} tiene situación distinta a 1: ${situacionNumero}`);
+                                    console.log(`CUIT/CUIL ${cuit} tiene situación 1: ${situacionNumero}`);
                                 }
                             } else {
                                 console.warn(`Situación inválida para la entidad ${entidad.entidad}:`, entidad.situacion);
@@ -312,8 +311,8 @@ async function consultarDeudaUsuario() {
         if (resultadosDeudasValidos > 0) {
             mostrarMensaje('messageDeudas', `Consulta de deudas completada. Se encontraron ${resultadosDeudasValidos} resultados válidos.`, 'success');
         } else {
-            mostrarMensaje('messageDeudas', 'Consulta de deudas completada. No se encontraron deudores con situación 1.', 'warning');
-            console.warn('Consulta de deudas completada. No se encontraron deudores con situación 1.');
+            mostrarMensaje('messageDeudas', 'Consulta de deudas completada. No se encontraron deudores con situación distinta a 1.', 'warning');
+            console.warn('Consulta de deudas completada. No se encontraron deudores con situación distinta a 1.');
         }
 
         if (resultadosChequesValidos > 0) {
