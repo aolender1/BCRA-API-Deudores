@@ -214,6 +214,7 @@ async function consultarDeudaUsuario() {
                 const { results } = data.deuda;
 
                 const denominacion = results.results.denominacion;
+                const identificacion = results.results.identificacion;
                 const periodos = results.results.periodos;
 
                 if (periodos && periodos.length > 0) {
@@ -282,6 +283,7 @@ async function consultarDeudaUsuario() {
                                         // Añadir una fila a la tabla de cheques rechazados
                                         const row = resultadosChequesBody.insertRow();
                                         row.insertCell().textContent = denominacion || 'N/A';
+                                        row.insertCell().textContent = cuit;
                                         row.insertCell().textContent = nroCheque;
                                         row.insertCell().textContent = fechaRechazo;
                                         row.insertCell().textContent = monto;

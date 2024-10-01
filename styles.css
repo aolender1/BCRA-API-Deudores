@@ -278,7 +278,7 @@ table tbody tr:nth-child(even) {
 
 /* Tema Oscuro */
 body.dark {
-    background-color: var(--bg-dark);
+    background-color: #121212;
     color: var(--text-dark);
 }
 
@@ -291,8 +291,7 @@ body.dark table tbody tr:nth-child(even) {
 }
 
 .dark .theme__fill {
-    background-color: var(--bg-dark);
-    pointer-events: none;
+    background-color: #121212;
 }
 
 .dark .theme__toggle {
