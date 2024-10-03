@@ -395,3 +395,31 @@ body.dark table tbody tr:nth-child(even) {
 #toggle:checked + svg #stars {
     opacity: 1;
 }
+
+footer {
+    background-color: white;
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px 0;
+}
+
+footer a {
+    color: black;
+    text-decoration: underline;
+}
+
+footer a:hover {
+    opacity: 0.8;
+}
+
+.dark footer{
+    background-color: var(--bg-dark);
+    color: #ffffff;
+}
+
+.dark footer a{
+    background-color: var(--bg-dark);
+    color: #ffffff;
+}
