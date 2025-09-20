@@ -251,6 +251,8 @@ async function consultarDeudaUsuario() {
         });
 
         // Procesar resultados de cheques rechazados
+        const chequesData = []; // Array temporal para almacenar todos los datos de cheques
+
         resultadosCheques.forEach((data) => {
             const cuit = data.cuit;
 
@@ -279,14 +281,16 @@ async function consultarDeudaUsuario() {
                                         const fechaRechazo = detalle.fechaRechazo || 'N/A';
                                         const monto = detalle.monto || 'N/A';
 
-                                        // Añadir una fila a la tabla de cheques rechazados
-                                        const row = resultadosChequesBody.insertRow();
-                                        row.insertCell().textContent = denominacion || 'N/A';
-                                        row.insertCell().textContent = cuit;
-                                        row.insertCell().textContent = nroCheque;
-                                        row.insertCell().textContent = fechaRechazo;
-                                        row.insertCell().textContent = monto;
-                                        row.insertCell().textContent = causal || 'N/A';
+                                        // Almacenar datos en el array temporal en lugar de insertar directamente
+                                        chequesData.push({
+                                            denominacion: denominacion || 'N/A',
+                                            cuit: cuit,
+                                            nroCheque: nroCheque,
+                                            fechaRechazo: fechaRechazo,
+                                            monto: monto,
+                                            causal: causal || 'N/A'
+                                        });
+
                                         resultadosChequesValidos++;
                                         console.log(`Cheque rechazado agregado para CUIT/CUIL ${cuit}:`, detalle);
                                     });
@@ -305,6 +309,34 @@ async function consultarDeudaUsuario() {
                 // Manejar otros códigos de estado o errores
                 console.error(`Error para CUIT/CUIL ${cuit}: ${data.cheques.error}`);
             }
+        });
+
+        // Ordenar los datos de cheques por denominación y luego por fecha de rechazo (más nuevas primero)
+        chequesData.sort((a, b) => {
+            // Primero ordenar por denominación (alfabéticamente)
+            const denominacionComparison = a.denominacion.localeCompare(b.denominacion);
+            if (denominacionComparison !== 0) {
+                return denominacionComparison;
+            }
+
+            // Si las denominaciones son iguales, ordenar por fecha de rechazo (más nuevas primero)
+            // Convertir fechas para comparación (asumiendo formato YYYY-MM-DD)
+            const fechaA = new Date(a.fechaRechazo);
+            const fechaB = new Date(b.fechaRechazo);
+
+            // Ordenar fechas descendente (más nuevas primero)
+            return fechaB.getTime() - fechaA.getTime();
+        });
+
+        // Insertar los datos ordenados en la tabla
+        chequesData.forEach(cheque => {
+            const row = resultadosChequesBody.insertRow();
+            row.insertCell().textContent = cheque.denominacion;
+            row.insertCell().textContent = cheque.cuit;
+            row.insertCell().textContent = cheque.nroCheque;
+            row.insertCell().textContent = cheque.fechaRechazo;
+            row.insertCell().textContent = cheque.monto;
+            row.insertCell().textContent = cheque.causal;
         });
 
         // Actualizar mensajes en base a resultados
